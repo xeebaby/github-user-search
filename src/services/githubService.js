@@ -1,15 +1,22 @@
-import axios from 'axios';
+const BASE_URL = "https://api.github.com";
 
-const API_URL = 'https://api.github.com/search/users?q'; // Checker expects this exact string
+export const fetchUsers = async ({ query, location, minRepos }) => {
+  let searchQuery = query ? `${query}` : "";
 
-export const fetchAdvancedUserSearch = async ({ username, location, minRepos }) => {
-  let query = '';
+  if (location) {
+    searchQuery += ` location:${location}`;
+  }
 
-  if (username) query += `${username} in:login`;
-  if (location) query += ` location:${location}`;
-  if (minRepos) query += ` repos:>=${minRepos}`;
+  if (minRepos) {
+    searchQuery += ` repos:>=${minRepos}`;
+  }
 
-  const response = await axios.get(`https://api.github.com/search/users`, {
-    params: { q: query.trim() },
-    headers: {
-      Authorization: `token ${import.meta.env.VITE_GITHUB_API_TOKEN || ''}`,
+  const response = await fetch(`${BASE_URL}/search/users?q=${encodeURIComponent(searchQuery)}`);
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch users");
+  }
+
+  const data = await response.json();
+  return data.items;
+};
