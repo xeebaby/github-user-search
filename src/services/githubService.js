@@ -20,3 +20,5 @@ export const fetchUsers = async ({ query, location, minRepos }) => {
   const data = await response.json();
   return data.items;
 };
+
+export { fetchAdvancedUserSearch };
