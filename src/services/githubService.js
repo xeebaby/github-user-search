@@ -1,5 +1,3 @@
-
-
 const BASE_URL = 'https://api.github.com';
 
 export const fetchAdvancedUserSearch = async (query, minRepos = 0, location = '') => {
@@ -16,4 +14,3 @@ export const fetchAdvancedUserSearch = async (query, minRepos = 0, location = ''
     throw error;
   }
 };
-export { fetchAdvancedUserSearch };
